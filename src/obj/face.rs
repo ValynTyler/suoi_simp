@@ -1,3 +1,5 @@
+use nerd::vector::{Vector2, Vector3};
+
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct FaceElement {
@@ -52,8 +54,8 @@ impl FaceElement {
             .collect();
 
         let vertex_index: u32 = *tokens.get(0).or(Some(&0)).unwrap();
-        let normal_index: u32 = *tokens.get(1).or(Some(&0)).unwrap();
-        let uv_index: u32 = *tokens.get(2).or(Some(&0)).unwrap();
+        let uv_index: u32 = *tokens.get(1).or(Some(&0)).unwrap();
+        let normal_index: u32 = *tokens.get(2).or(Some(&0)).unwrap();
 
         Self {
             vertex_index,
@@ -80,7 +82,38 @@ impl Face {
         }
     }
 
+    // Immutable getter for `Face.elements`
     pub fn elements(&self) -> &Vec<FaceElement> {
         &self.elements
+    }
+
+    pub fn read_vertices(&self, vertices: &Vec<Vector3>) -> Vec<Vector3> {
+        let mut v = vec![];
+        
+        for elem in self.elements() {
+            v.push(vertices[elem.vertex_index as usize - 1])
+        }
+
+        v
+    }
+
+    pub fn read_normals(&self, normals: &Vec<Vector3>) -> Vec<Vector3> {
+        let mut v = vec![];
+        
+        for elem in self.elements() {
+            v.push(normals[elem.normal_index as usize - 1])
+        }
+
+        v
+    }
+
+    pub fn read_uvs(&self, uvs: &Vec<Vector2>) -> Vec<Vector2> {
+        let mut v = vec![];
+        
+        for elem in self.elements() {
+            v.push(uvs[elem.uv_index as usize - 1])
+        }
+
+        v
     }
 }

@@ -22,7 +22,7 @@ impl ObjMesh {
     `ObjMesh::empty`
     ---
     Creates an empty instance of `ObjMesh`
-    */ 
+    */
     pub fn empty() -> Self {
         Self {
             name: String::new(),
@@ -31,6 +31,21 @@ impl ObjMesh {
             uv_data: vec![],
             face_data: vec![],
         }
+    }
+
+    // Immutable getter for `vertex_data` of `ObjMesh`
+    pub fn positions(&self) -> &Vec<Vector3> {
+        &self.vertex_data
+    }
+
+    // Immutable getter for `normal_data` of `ObjMesh`
+    pub fn normals(&self) -> &Vec<Vector3> {
+        &self.normal_data
+    }
+
+    // Immutable getter for `uv_data` of `ObjMesh`
+    pub fn uvs(&self) -> &Vec<Vector2> {
+        &self.uv_data
     }
 
     // Immutable getter for `face_data` of `ObjMesh`
