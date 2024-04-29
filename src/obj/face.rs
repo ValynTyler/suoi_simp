@@ -1,5 +1,3 @@
-use nerd::vector::{Vector2, Vector3};
-
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct FaceElement {
@@ -22,19 +20,19 @@ impl FaceElement {
         }
     }
 
-    // Immutable getter for `vertex_index` of `FaceElement`
+    /// Immutable getter for `vertex_index` of `FaceElement`
     pub fn vertex_index(&self) -> u32 {
         self.vertex_index
     }
 
-    // Immutable getter for `normal_index` of `FaceElement`
+    /// Immutable getter for `normal_index` of `FaceElement`
     pub fn normal_index(&self) -> u32 {
-        self.vertex_index
+        self.normal_index
     }
 
-    // Immutable getter for `uv_index` of `FaceElement`
+    /// Immutable getter for `uv_index` of `FaceElement`
     pub fn uv_index(&self) -> u32 {
-        self.vertex_index
+        self.uv_index
     }
     
     /**
@@ -72,48 +70,18 @@ pub struct Face {
 }
 
 impl Face {
-    // `Face::new`
-    // ---
-    // Creates and returns a new instance of `Face`
-    // using the supplied `FaceElement` list
+    /// `Face::new`
+    /// ---
+    /// Creates and returns a new instance of `Face`
+    /// using the supplied `FaceElement` list
     pub fn new(elements: Vec<FaceElement>) -> Self {
         Self {
             elements
         }
     }
 
-    // Immutable getter for `Face.elements`
+    /// Immutable getter for `Face.elements`
     pub fn elements(&self) -> &Vec<FaceElement> {
         &self.elements
-    }
-
-    pub fn read_vertices(&self, vertices: &Vec<Vector3>) -> Vec<Vector3> {
-        let mut v = vec![];
-        
-        for elem in self.elements() {
-            v.push(vertices[elem.vertex_index as usize - 1])
-        }
-
-        v
-    }
-
-    pub fn read_normals(&self, normals: &Vec<Vector3>) -> Vec<Vector3> {
-        let mut v = vec![];
-        
-        for elem in self.elements() {
-            v.push(normals[elem.normal_index as usize - 1])
-        }
-
-        v
-    }
-
-    pub fn read_uvs(&self, uvs: &Vec<Vector2>) -> Vec<Vector2> {
-        let mut v = vec![];
-        
-        for elem in self.elements() {
-            v.push(uvs[elem.uv_index as usize - 1])
-        }
-
-        v
     }
 }
