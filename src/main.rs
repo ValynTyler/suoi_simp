@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use suoi_importer::obj::Obj;
+use suoi_simp::obj::Obj;
 
 fn main() {
     let path = Path::new("assets/models/cube/cube.obj");

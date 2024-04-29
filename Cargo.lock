@@ -7,7 +7,7 @@ name = "nerd"
 version = "0.1.0"
 
 [[package]]
-name = "suoi-importer"
+name = "suoi_simp"
 version = "0.1.0"
 dependencies = [
  "nerd",
