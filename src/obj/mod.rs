@@ -39,6 +39,11 @@ impl Obj {
         }
     }
 
+    /// Utility function for parsing an element of a `Tokens`
+    /// iter into a `f32`.
+    /// Returns Ok(f32) after successfully parsing, or
+    /// Err(Error::InvalidData) if `tokens` doesn't contain
+    /// appropriately structured data
     fn parse_float(tokens: &mut Tokens) -> Result<f32, Error> {
         tokens
             .next()
@@ -48,13 +53,13 @@ impl Obj {
     }
 
     /**
-    Obj::import
+    `Obj::import`
     ---
     Import the `.obj` file located at `path`.
-    Returns the `Obj` struct generated from
-    said file.
+    Returns the`Obj` struct generated from
+    said file, wrapped in a `Result`.
     */
-    fn import<P>(path: P) -> Result<ObjMesh, Error>
+    pub fn import<P>(path: P) -> Result<ObjMesh, Error>
     where
         P: AsRef<Path>,
     {
@@ -126,9 +131,4 @@ impl Obj {
 
         Ok(mesh)
     }
-}
-
-pub fn test_fn() {
-    let mesh = Obj::import("assets/models/cube/cube.obj").expect("FUCK");
-    println!("{:#?}", mesh);
 }

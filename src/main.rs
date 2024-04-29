@@ -1,5 +1,11 @@
-use suoi_importer::obj;
+use std::path::Path;
+
+use suoi_importer::obj::Obj;
 
 fn main() {
-    obj::test_fn();
+    let path = Path::new("assets/models/cube/cube.obj");
+    assert_eq!(path.extension().unwrap(), "obj");
+
+    let mesh = Obj::import(path).expect("Error");
+    println!("{:#?}", mesh);
 }
