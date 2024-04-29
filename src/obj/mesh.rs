@@ -33,6 +33,11 @@ impl ObjMesh {
         }
     }
 
+    // Immutable getter for `face_data` of `ObjMesh`
+    pub fn faces(&self) -> &Vec<Face> {
+        &self.face_data
+    }
+
     /**
     `ObjMesh.set_name`
     ---

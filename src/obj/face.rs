@@ -19,6 +19,21 @@ impl FaceElement {
             uv_index,
         }
     }
+
+    // Immutable getter for `vertex_index` of `FaceElement`
+    pub fn vertex_index(&self) -> u32 {
+        self.vertex_index
+    }
+
+    // Immutable getter for `normal_index` of `FaceElement`
+    pub fn normal_index(&self) -> u32 {
+        self.vertex_index
+    }
+
+    // Immutable getter for `uv_index` of `FaceElement`
+    pub fn uv_index(&self) -> u32 {
+        self.vertex_index
+    }
     
     /**
     `FaceElement::parse`
@@ -55,9 +70,17 @@ pub struct Face {
 }
 
 impl Face {
+    // `Face::new`
+    // ---
+    // Creates and returns a new instance of `Face`
+    // using the supplied `FaceElement` list
     pub fn new(elements: Vec<FaceElement>) -> Self {
         Self {
             elements
         }
+    }
+
+    pub fn elements(&self) -> &Vec<FaceElement> {
+        &self.elements
     }
 }
