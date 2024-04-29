@@ -1,3 +1,5 @@
+use suoi_importer::obj;
+
 fn main() {
-    println!("Hello, world!");
+    obj::test_fn();
 }
