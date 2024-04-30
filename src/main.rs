@@ -1,11 +1,14 @@
 use std::path::Path;
 
-use suoi_simp::Obj;
+use suoi_simp::{Mtl, Obj, Resource};
 
 fn main() {
-    let path = Path::new("../assets/models/cube.obj");
-    assert_eq!(path.extension().unwrap(), "obj");
+    let obj_path = Path::new("../assets/models/cube.obj");
+    let obj: Obj = Obj::import(obj_path).expect("ImportError");
+    let mesh = obj.mesh();
 
-    let mesh = Obj::import(path).expect("ImportError");
     println!("{:#?}", mesh);
+    
+    let mtl_path = Path::new("../assets/models/cube.mtl");
+    let _material = Mtl::import(mtl_path).expect("IMPORT_ERROR");
 }

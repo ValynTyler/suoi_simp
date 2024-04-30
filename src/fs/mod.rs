@@ -57,7 +57,7 @@ impl Fs {
     {
         for line in text.lines() {
             let mut tokens = line.split_ascii_whitespace();
-            let cmd_token = tokens.next().ok_or(ImportError::InvalidData)?;
+            let cmd_token = tokens.next().or(Some("")).unwrap();
 
             (f)(tokens, cmd_token)?;
         }

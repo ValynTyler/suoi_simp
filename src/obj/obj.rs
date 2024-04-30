@@ -6,10 +6,19 @@ use crate::fs::Path;
 use crate::mesh::ObjMesh;
 use crate::Fs;
 use crate::ImportError;
+use crate::Resource;
 
-pub struct Obj {}
+pub struct Obj {
+    mesh: ObjMesh,
+}
 
 impl Obj {
+    pub fn mesh(&self) -> &ObjMesh {
+        &self.mesh
+    }
+}
+
+impl Resource for Obj {
     /**
     `Obj::import`
     ---
@@ -17,7 +26,7 @@ impl Obj {
     Returns the `Obj` struct generated from
     said file, wrapped in a `Result`.
     */
-    pub fn import<P>(path: P) -> Result<ObjMesh, ImportError>   // TODO: Create `Resource` trait to contain this and `Mtl`
+    fn import<P>(path: P) -> Result<Obj, ImportError>
     where
         P: AsRef<Path>,
     {
@@ -30,7 +39,6 @@ impl Obj {
             match cmd {
                 "mtllib" => {
                     // material library
-                    
                 }
                 "usemtl" => {
                     // use material
@@ -80,11 +88,12 @@ impl Obj {
                     let face: Face = Face::new(face_elements);
                     mesh.load_face(face);
                 }
+                "" => (),
                 _ => return Err(ImportError::UnrecognisedToken(cmd.to_owned())),
             }
             Ok(())
         })?;
 
-        Ok(mesh)
+        Ok(Self { mesh })
     }
 }

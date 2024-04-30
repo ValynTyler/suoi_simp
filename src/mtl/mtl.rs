@@ -1,9 +1,9 @@
-use crate::{Fs, ImportError};
+use crate::{Fs, ImportError, Resource};
 use crate::Path;
 
 pub struct Mtl {}
 
-impl Mtl {
+impl Resource for Mtl {
     /**
     `Mtl::import`
     ---
@@ -11,14 +11,21 @@ impl Mtl {
     Returns the `Mtl` struct generated from
     said file, wrapped in a `Result`.
     */
-    pub fn import<P>(path: P) -> Result<Self, ImportError>
-    // TODO: Create `Resource` trait to contain this and `Mtl`
+    fn import<P>(path: P) -> Result<Self, ImportError>
     where
         P: AsRef<Path>,
     {
         let mut file = Fs::open_file(path)?;
-        let _text = Fs::read_file(&mut file)?;
+        let text = Fs::read_file(&mut file)?;
 
+        println!("{}", text);
+
+        Fs::parse_lines(text, |_, _| {
+            
+            Ok(())
+        })?;
+
+        // Ok(Self { })
         todo!()
     }
 }
