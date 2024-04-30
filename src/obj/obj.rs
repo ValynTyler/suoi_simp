@@ -14,7 +14,7 @@ impl Obj {
     `Obj::import`
     ---
     Import the `.obj` file located at `path`.
-    Returns the`Obj` struct generated from
+    Returns the `Obj` struct generated from
     said file, wrapped in a `Result`.
     */
     pub fn import<P>(path: P) -> Result<ObjMesh, ImportError>   // TODO: Create `Resource` trait to contain this and `Mtl`
@@ -26,11 +26,8 @@ impl Obj {
 
         let mut mesh = ObjMesh::empty();
 
-        for line in text.lines() {
-            let mut tokens = line.split_ascii_whitespace();
-            let command_token = tokens.next().ok_or(ImportError::InvalidData)?;
-
-            match command_token {
+        Fs::parse_lines(text, |mut tokens, cmd| {
+            match cmd {
                 "mtllib" => {
                     // material library
                     
@@ -83,9 +80,10 @@ impl Obj {
                     let face: Face = Face::new(face_elements);
                     mesh.load_face(face);
                 }
-                _ => return Err(ImportError::UnrecognisedToken(command_token.to_owned())),
+                _ => return Err(ImportError::UnrecognisedToken(cmd.to_owned())),
             }
-        }
+            Ok(())
+        })?;
 
         Ok(mesh)
     }

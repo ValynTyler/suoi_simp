@@ -2,8 +2,8 @@ use std::{fs::File, io::Read};
 
 use crate::ImportError;
 
-pub use std::path::Path;
-pub use std::str::SplitAsciiWhitespace as Tokens;
+pub type Path = std::path::Path;
+pub type Tokens<'a> = std::str::SplitAsciiWhitespace<'a>;
 
 pub struct Fs;
 
@@ -49,5 +49,19 @@ impl Fs {
             .ok_or(ImportError::InvalidData)?
             .parse::<f32>()
             .or(Err(ImportError::InvalidData))
+    }
+
+    pub fn parse_lines<F>(text: String, mut f: F) -> Result<(), ImportError>
+    where
+        F: FnMut(Tokens, &str) -> Result<(), ImportError>
+    {
+        for line in text.lines() {
+            let mut tokens = line.split_ascii_whitespace();
+            let cmd_token = tokens.next().ok_or(ImportError::InvalidData)?;
+
+            (f)(tokens, cmd_token)?;
+        }
+
+        Ok(())
     }
 }
