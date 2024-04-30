@@ -2,7 +2,6 @@ use nerd::vector::{Vector2, Vector3};
 
 use super::Face;
 
-#[allow(dead_code)]
 #[derive(Debug)]
 pub struct ObjMesh {
     // token: o

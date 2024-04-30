@@ -1,4 +1,10 @@
-#[allow(dead_code)]
+/**
+`obj::FaceELement`
+---
+Substructure for `obj::Face` that stores the
+index into the `position`, `normal`, and `uv` buffers
+of a single polygonal `vertex` 
+*/
 #[derive(Debug)]
 pub struct FaceElement {
     vertex_index: u32,
@@ -63,7 +69,12 @@ impl FaceElement {
     }
 }
 
-#[allow(dead_code)]
+/**
+`obj::Face`
+---
+Represents a polygonal face by storing indices
+for the relevant `position`, `normal` and `uv` buffers
+*/
 #[derive(Debug)]
 pub struct Face {
     elements: Vec<FaceElement>
