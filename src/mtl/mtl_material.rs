@@ -3,7 +3,7 @@ use nerd::vector::Vector3 as Color;
 use crate::PathBuf;
 
 #[allow(unused)]
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct MtlMaterial {
     name: String,
 
@@ -34,13 +34,21 @@ pub struct MtlMaterial {
 }
 
 impl MtlMaterial {
-    pub fn name(&mut self) -> &mut String {
-        &mut self.name
+    pub fn name(&self) -> &str {
+        &self.name
     }
 
-    pub fn diffuse_path(&mut self, path: PathBuf) {
+    pub fn set_name(&mut self, value: &str) {
+        self.name = value.to_string();
+    }
+
+    pub fn get_diffuse_path(&self) -> &Option<PathBuf> {
+        &self.diffuse_texmap
+    }
+
+    pub fn set_diffuse_path(&mut self, path: PathBuf) {
         self.diffuse_texmap = Some(path);
-    } 
+    }
 
     pub fn empty() -> Self {
         Self {

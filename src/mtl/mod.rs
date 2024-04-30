@@ -1,5 +1,5 @@
 pub mod mtl;
 pub use mtl::*;
 
-pub mod material;
-pub use material::*;
+pub mod mtl_material;
+pub use mtl_material::*;

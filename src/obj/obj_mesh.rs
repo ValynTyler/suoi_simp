@@ -1,9 +1,13 @@
 use nerd::vector::{Vector2, Vector3};
 
-use crate::face::Face;
+use crate::{face::Face, MtlMaterial};
 
+#[allow(unused)]
 #[derive(Debug)]
 pub struct ObjMesh {
+    // token: usemtl
+    active_material: MtlMaterial,
+
     // token: o
     name: String,
 
@@ -24,6 +28,7 @@ impl ObjMesh {
     */
     pub fn empty() -> Self {
         Self {
+            active_material: MtlMaterial::empty(),
             name: String::new(),
             vertex_data: vec![],
             normal_data: vec![],
@@ -32,24 +37,33 @@ impl ObjMesh {
         }
     }
 
-    // Immutable getter for `vertex_data` of `ObjMesh`
+    /// Immutable getter for `vertex_data` of `ObjMesh`
     pub fn positions(&self) -> &Vec<Vector3> {
         &self.vertex_data
     }
 
-    // Immutable getter for `normal_data` of `ObjMesh`
+    /// Immutable getter for `normal_data` of `ObjMesh`
     pub fn normals(&self) -> &Vec<Vector3> {
         &self.normal_data
     }
 
-    // Immutable getter for `uv_data` of `ObjMesh`
+    /// Immutable getter for `uv_data` of `ObjMesh`
     pub fn uvs(&self) -> &Vec<Vector2> {
         &self.uv_data
     }
 
-    // Immutable getter for `face_data` of `ObjMesh`
+    /// Immutable getter for `face_data` of `ObjMesh`
     pub fn faces(&self) -> &Vec<Face> {
         &self.face_data
+    }
+
+    /// Mutable getter for `material` of `ObjMesh`
+    pub fn material(&mut self) -> &mut MtlMaterial {
+        &mut self.active_material
+    }
+
+    pub fn get_material(&self) -> &MtlMaterial {
+        &self.active_material
     }
 
     /**

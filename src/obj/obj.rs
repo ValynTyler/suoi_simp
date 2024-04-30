@@ -3,7 +3,7 @@ use nerd::vector::{Vector2, Vector3};
 use crate::face::Face;
 use crate::face::FaceElement;
 use crate::fs::Path;
-use crate::mesh::ObjMesh;
+use crate::obj_mesh::ObjMesh;
 use crate::Fs;
 use crate::ImportError;
 use crate::Mtl;
@@ -13,7 +13,7 @@ use crate::Resource;
 #[derive(Debug)]
 pub struct Obj {
     mesh: ObjMesh,
-    mtl: Option<Mtl>,
+    mtl: Mtl,
 }
 
 impl Obj {
@@ -35,7 +35,7 @@ impl Resource for Obj {
         let text = Fs::read_file(&mut file)?;
 
         let mut mesh = ObjMesh::empty();
-        let mut mtl = None;
+        let mut mtl = Mtl::empty();
 
         Fs::parse_lines(text, |mut tokens, cmd| {
             match cmd {
@@ -48,10 +48,13 @@ impl Resource for Obj {
                         .to_owned();
                     mtl_path.push(mtl_file);
 
-                    mtl = Some(Mtl::import(&mtl_path)?);
+                    mtl = Mtl::import(&mtl_path)?;
                 }
                 "usemtl" => {
                     // use material
+                    let mat_name = tokens.remainder().ok_or(ImportError::InvalidData)?;
+                    let new_mat = mtl.get_material(mat_name).ok_or(ImportError::InvalidData)?;
+                    *mesh.material() = new_mat.clone();
                 }
                 "o" => {
                     // object name
