@@ -1,7 +1,16 @@
-use crate::{Fs, ImportError, Resource};
 use crate::Path;
+use crate::{Fs, ImportError, MtlMaterial, Resource};
 
-pub struct Mtl {}
+#[derive(Debug)]
+pub struct Mtl {
+    material: MtlMaterial,
+}
+
+impl Mtl {
+    pub fn material(&self) -> &MtlMaterial {
+        &self.material
+    }
+}
 
 impl Resource for Mtl {
     /**
@@ -11,21 +20,34 @@ impl Resource for Mtl {
     Returns the `Mtl` struct generated from
     said file, wrapped in a `Result`.
     */
-    fn import<P>(path: P) -> Result<Self, ImportError>
-    where
-        P: AsRef<Path>,
-    {
-        let mut file = Fs::open_file(path)?;
+    fn import(path: &Path) -> Result<Self, ImportError> {
+        let mut file = Fs::open_file(&path)?;
         let text = Fs::read_file(&mut file)?;
 
-        println!("{}", text);
+        let mut mat = MtlMaterial::empty();
 
-        Fs::parse_lines(text, |_, _| {
-            
+        Fs::parse_lines(text, |mut tokens, cmd| {
+            match cmd {
+                "newmtl" => {
+                    *mat.name() = tokens.next().ok_or(ImportError::InvalidData)?.to_owned();
+                }
+                "map_Kd" => mat.diffuse_path(
+                    Path::new(tokens.next().ok_or(ImportError::InvalidData)?).to_owned(),
+                ),
+                "illum" => {}
+                "Ka" => {}
+                "Ks" => {}
+                "Ns" => {}
+                "Ke" => {}
+                "Ni" => {}
+                "d" => {}
+                "#" => {}
+                "" => (),
+                _ => return Err(ImportError::UnrecognisedToken(cmd.to_owned())),
+            }
             Ok(())
         })?;
 
-        // Ok(Self { })
-        todo!()
+        Ok(Self { material: mat })
     }
 }

@@ -6,10 +6,14 @@ use crate::fs::Path;
 use crate::mesh::ObjMesh;
 use crate::Fs;
 use crate::ImportError;
+use crate::Mtl;
 use crate::Resource;
 
+#[allow(unused)]
+#[derive(Debug)]
 pub struct Obj {
     mesh: ObjMesh,
+    mtl: Option<Mtl>,
 }
 
 impl Obj {
@@ -26,19 +30,26 @@ impl Resource for Obj {
     Returns the `Obj` struct generated from
     said file, wrapped in a `Result`.
     */
-    fn import<P>(path: P) -> Result<Obj, ImportError>
-    where
-        P: AsRef<Path>,
-    {
+    fn import(path: &Path) -> Result<Obj, ImportError> {
         let mut file = Fs::open_file(path)?;
         let text = Fs::read_file(&mut file)?;
 
         let mut mesh = ObjMesh::empty();
+        let mut mtl = None;
 
         Fs::parse_lines(text, |mut tokens, cmd| {
             match cmd {
                 "mtllib" => {
                     // material library
+                    let mtl_path = Path::new(tokens.next().ok_or(ImportError::InvalidData)?);
+
+                    let mut new_path = path
+                        .parent()
+                        .ok_or(ImportError::InvalidData)?
+                        .to_owned();
+                    new_path.push(mtl_path);
+                    
+                    mtl = Some(Mtl::import(&new_path)?);
                 }
                 "usemtl" => {
                     // use material
@@ -94,6 +105,6 @@ impl Resource for Obj {
             Ok(())
         })?;
 
-        Ok(Self { mesh })
+        Ok(Self { mesh, mtl })
     }
 }

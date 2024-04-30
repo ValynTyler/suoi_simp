@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 /**
 crate::ImportError
 ---
@@ -7,7 +9,7 @@ crate specific falible function calls
 */
 #[derive(Debug)]
 pub enum ImportError {
-    InvalidPath,
     InvalidData,
+    InvalidPath(PathBuf),
     UnrecognisedToken(String),
 }

@@ -3,6 +3,7 @@ use std::{fs::File, io::Read};
 use crate::ImportError;
 
 pub type Path = std::path::Path;
+pub type PathBuf = std::path::PathBuf;
 pub type Tokens<'a> = std::str::SplitAsciiWhitespace<'a>;
 
 pub struct Fs;
@@ -13,13 +14,10 @@ impl Fs {
     ---
     Wrapper for File::open
     */
-    pub fn open_file<P>(path: P) -> Result<File, ImportError>
-    where
-        P: AsRef<Path>,
-    {
+    pub fn open_file(path: &Path) -> Result<File, ImportError> {
         match File::open(&path) {
             Ok(file) => Ok(file),
-            Err(_) => Err(ImportError::InvalidPath),
+            Err(_) => Err(ImportError::InvalidPath(path.to_owned())),
         }
     }
 
