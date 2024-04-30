@@ -1,6 +1,6 @@
 use nerd::vector::{Vector2, Vector3};
 
-use super::Face;
+use crate::face::Face;
 
 #[derive(Debug)]
 pub struct ObjMesh {

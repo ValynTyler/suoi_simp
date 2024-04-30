@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use suoi_simp::obj::Obj;
+use suoi_simp::Obj;
 
 fn main() {
     let path = Path::new("../suoi_assets/models/cube.obj");
