@@ -26,14 +26,21 @@ impl Resource for Mtl {
 
         let mut mat = MtlMaterial::empty();
 
-        Fs::parse_lines(text, |mut tokens, cmd| {
+        Fs::parse_lines(text, |tokens, cmd| {
             match cmd {
                 "newmtl" => {
-                    *mat.name() = tokens.next().ok_or(ImportError::InvalidData)?.to_owned();
+                    *mat.name() = tokens
+                        .remainder()
+                        .ok_or(ImportError::InvalidData)?
+                        .to_owned();
                 }
-                "map_Kd" => mat.diffuse_path(
-                    Path::new(tokens.next().ok_or(ImportError::InvalidData)?).to_owned(),
-                ),
+                "map_Kd" => {
+                    let map_path = Path::new(tokens
+                        .remainder()
+                        .ok_or(ImportError::InvalidData)?)
+                        .to_owned();
+                    mat.diffuse_path(map_path);
+                }
                 "illum" => {}
                 "Ka" => {}
                 "Ks" => {}

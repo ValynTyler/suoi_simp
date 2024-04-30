@@ -41,22 +41,21 @@ impl Resource for Obj {
             match cmd {
                 "mtllib" => {
                     // material library
-                    let mtl_path = Path::new(tokens.next().ok_or(ImportError::InvalidData)?);
-
-                    let mut new_path = path
+                    let mtl_file = tokens.remainder().ok_or(ImportError::InvalidData)?;
+                    let mut mtl_path = path
                         .parent()
-                        .ok_or(ImportError::InvalidData)?
+                        .ok_or(ImportError::InvalidPath(path.to_owned()))?
                         .to_owned();
-                    new_path.push(mtl_path);
-                    
-                    mtl = Some(Mtl::import(&new_path)?);
+                    mtl_path.push(mtl_file);
+
+                    mtl = Some(Mtl::import(&mtl_path)?);
                 }
                 "usemtl" => {
                     // use material
                 }
                 "o" => {
                     // object name
-                    mesh.set_name(tokens.next().or(Some("")).unwrap());
+                    mesh.set_name(tokens.remainder().ok_or(ImportError::InvalidData)?);
                 }
                 "v" => {
                     // vertex definition
