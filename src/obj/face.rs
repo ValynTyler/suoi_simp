@@ -3,7 +3,7 @@
 ---
 Substructure for `obj::Face` that stores the
 index into the `position`, `normal`, and `uv` buffers
-of a single polygonal `vertex` 
+of a single polygonal `vertex`
 */
 #[derive(Debug)]
 pub struct FaceElement {
@@ -16,7 +16,7 @@ impl FaceElement {
     /**
     `FaceElement::new`
     ---
-    Creates a new `FaceElement` from the supplied `vertex`, `normal`, and `uv` indices 
+    Creates a new `FaceElement` from the supplied `vertex`, `normal`, and `uv` indices
     */
     pub fn new(position_index: u32, normal_index: u32, uv_index: u32) -> Self {
         Self {
@@ -40,7 +40,7 @@ impl FaceElement {
     pub fn uv_index(&self) -> u32 {
         self.uv_index
     }
-    
+
     /**
     `FaceElement::parse`
     ---
@@ -57,14 +57,14 @@ impl FaceElement {
             })
             .collect();
 
-        let position_index: u32 = *tokens.get(0).or(Some(&0)).unwrap();
-        let uv_index: u32 = *tokens.get(1).or(Some(&0)).unwrap();
-        let normal_index: u32 = *tokens.get(2).or(Some(&0)).unwrap();
+        let pos_index: u32 = *tokens.get(0).unwrap();
+        let uvs_index: u32 = *tokens.get(1).unwrap();
+        let nrm_index: u32 = *tokens.get(2).unwrap();
 
         Self {
-            position_index,
-            normal_index,
-            uv_index,
+            position_index: pos_index,
+            normal_index: nrm_index,
+            uv_index: uvs_index,
         }
     }
 }
@@ -77,7 +77,7 @@ for the relevant `position`, `normal` and `uv` buffers
 */
 #[derive(Debug)]
 pub struct Face {
-    elements: Vec<FaceElement>
+    elements: Vec<FaceElement>,
 }
 
 impl Face {
@@ -86,9 +86,7 @@ impl Face {
     /// Creates and returns a new instance of `Face`
     /// using the supplied `FaceElement` list
     pub fn new(elements: Vec<FaceElement>) -> Self {
-        Self {
-            elements
-        }
+        Self { elements }
     }
 
     /// Immutable getter for `Face.elements`

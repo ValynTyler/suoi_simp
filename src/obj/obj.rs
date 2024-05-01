@@ -18,18 +18,6 @@ impl Obj {
     pub fn meshes(&self) -> &Vec<ObjMesh> {
         &self.meshes
     }
-
-    pub fn all_pos_data(&self) -> Vec<Vector3> {
-        let mut data = vec![];
-
-        for mesh in &self.meshes {
-            for pos in mesh.positions() {
-                data.push(*pos)
-            }
-        }
-
-        data
-    }
 }
 
 impl Resource for Obj {
@@ -64,7 +52,7 @@ impl Resource for Obj {
                     // use material
                     let mat_name = tokens.remainder().ok_or(ImportError::InvalidData)?;
                     let new_mat = mtl.get_material(mat_name).ok_or(ImportError::InvalidData)?;
-                    
+
                     meshes
                         .last_mut()
                         .ok_or(ImportError::InvalidData)?
