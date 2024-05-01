@@ -34,7 +34,7 @@ pub struct MtlMaterial {
 }
 
 impl MtlMaterial {
-    pub fn name(&self) -> &str {
+    pub fn get_name(&self) -> &str {
         &self.name
     }
 
@@ -48,6 +48,38 @@ impl MtlMaterial {
 
     pub fn set_diffuse_path(&mut self, path: PathBuf) {
         self.diffuse_texmap = Some(path);
+    }
+    
+    pub fn set_ambient_color(&mut self, ambient_color: Color) {
+        self.ambient_color = ambient_color;
+    }
+    
+    pub fn set_diffuse_color(&mut self, diffuse_color: Color) {
+        self.diffuse_color = diffuse_color;
+    }
+
+    pub fn set_illum(&mut self, value: u32) {
+        self.illumination_model = value;
+    }
+
+    pub fn set_opacity(&mut self, value: f32) {
+        self.opacity = value;
+    }
+
+    pub fn set_specular_color(&mut self, value: Color) {
+        self.specular_color = value;
+    }
+
+    pub fn set_specular_exponent(&mut self, value: f32) {
+        self.specular_exponent = value;
+    }
+
+    pub fn set_optical_density(&mut self, value: f32) {
+        self.optical_density = value;
+    }
+    
+    pub fn set_emissive(&mut self, emissive: Color) {
+        self.emissive = emissive;
     }
 
     pub fn empty() -> Self {

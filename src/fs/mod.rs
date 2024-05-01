@@ -49,6 +49,14 @@ impl Fs {
             .or(Err(ImportError::InvalidData))
     }
 
+    pub fn parse_uint(tokens: &mut Tokens) -> Result<u32, ImportError> {
+        tokens
+            .next()
+            .ok_or(ImportError::InvalidData)?
+            .parse::<u32>()
+            .or(Err(ImportError::InvalidData))
+    }
+
     pub fn parse_lines<F>(text: String, mut f: F) -> Result<(), ImportError>
     where
         F: FnMut(Tokens, &str) -> Result<(), ImportError>
