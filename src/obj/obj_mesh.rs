@@ -5,19 +5,18 @@ use crate::{face::Face, MtlMaterial};
 #[allow(unused)]
 #[derive(Debug)]
 pub struct ObjMesh {
-    // token: usemtl
-    active_material: MtlMaterial,
-
     // token: o
     name: String,
 
     // tokens: v, vn, vt
-    vertex_data: Vec<Vector3>,
+    position_data: Vec<Vector3>,
     normal_data: Vec<Vector3>,
     uv_data: Vec<Vector2>,
-
     // token: f
     face_data: Vec<Face>,
+
+    // token: usemtl
+    active_material: MtlMaterial,
 }
 
 impl ObjMesh {
@@ -28,18 +27,18 @@ impl ObjMesh {
     */
     pub fn empty() -> Self {
         Self {
-            active_material: MtlMaterial::empty(),
             name: String::new(),
-            vertex_data: vec![],
+            position_data: vec![],
             normal_data: vec![],
             uv_data: vec![],
             face_data: vec![],
+            active_material: MtlMaterial::empty(),
         }
     }
 
-    /// Immutable getter for `vertex_data` of `ObjMesh`
+    /// Immutable getter for `position_data` of `ObjMesh`
     pub fn positions(&self) -> &Vec<Vector3> {
-        &self.vertex_data
+        &self.position_data
     }
 
     /// Immutable getter for `normal_data` of `ObjMesh`
@@ -57,15 +56,6 @@ impl ObjMesh {
         &self.face_data
     }
 
-    /// Mutable getter for `material` of `ObjMesh`
-    pub fn material(&mut self) -> &mut MtlMaterial {
-        &mut self.active_material
-    }
-
-    pub fn get_material(&self) -> &MtlMaterial {
-        &self.active_material
-    }
-
     /**
     `ObjMesh.set_name`
     ---
@@ -74,14 +64,24 @@ impl ObjMesh {
     pub fn set_name(&mut self, value: &str) {
         self.name = value.to_owned()
     }
+    
+    /// Getter for `material` of `ObjMesh`
+    pub fn get_material(&self) -> &MtlMaterial {
+        &self.active_material
+    }
+    
+    /// Setter for `material` of `ObjMesh`
+    pub fn set_material(&mut self, value: MtlMaterial) {
+        self.active_material = value;
+    }
 
     /**
     `ObjMesh.load_vertex`
     ---
     Loads a `Vector3` into the `vertex_data` buffer of `self`
     */
-    pub fn load_vertex(&mut self, value: Vector3) {
-        self.vertex_data.push(value)
+    pub fn load_position(&mut self, value: Vector3) {
+        self.position_data.push(value)
     }
 
     /**

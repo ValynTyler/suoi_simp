@@ -9,16 +9,26 @@ use crate::ImportError;
 use crate::Mtl;
 use crate::Resource;
 
-#[allow(unused)]
 #[derive(Debug)]
 pub struct Obj {
-    mesh: ObjMesh,
-    mtl: Mtl,
+    meshes: Vec<ObjMesh>,
 }
 
 impl Obj {
-    pub fn mesh(&self) -> &ObjMesh {
-        &self.mesh
+    pub fn meshes(&self) -> &Vec<ObjMesh> {
+        &self.meshes
+    }
+
+    pub fn all_pos_data(&self) -> Vec<Vector3> {
+        let mut data = vec![];
+
+        for mesh in &self.meshes {
+            for pos in mesh.positions() {
+                data.push(*pos)
+            }
+        }
+
+        data
     }
 }
 
@@ -30,11 +40,11 @@ impl Resource for Obj {
     Returns the `Obj` struct generated from
     said file, wrapped in a `Result`.
     */
-    fn import(path: &Path) -> Result<Obj, ImportError> {
+    fn import(path: &Path) -> Result<Self, ImportError> {
         let mut file = Fs::open_file(path)?;
         let text = Fs::read_file(&mut file)?;
 
-        let mut mesh = ObjMesh::empty();
+        let mut meshes: Vec<ObjMesh> = vec![];
         let mut mtl = Mtl::empty();
 
         Fs::parse_lines(text, |mut tokens, cmd| {
@@ -54,11 +64,18 @@ impl Resource for Obj {
                     // use material
                     let mat_name = tokens.remainder().ok_or(ImportError::InvalidData)?;
                     let new_mat = mtl.get_material(mat_name).ok_or(ImportError::InvalidData)?;
-                    *mesh.material() = new_mat.clone();
+                    
+                    meshes
+                        .last_mut()
+                        .ok_or(ImportError::InvalidData)?
+                        .set_material(new_mat.clone());
                 }
                 "o" => {
                     // object name
-                    mesh.set_name(tokens.remainder().ok_or(ImportError::InvalidData)?);
+                    let mut new_mesh = ObjMesh::empty();
+                    new_mesh.set_name(tokens.remainder().ok_or(ImportError::InvalidData)?);
+
+                    meshes.push(new_mesh);
                 }
                 "v" => {
                     // vertex definition
@@ -67,7 +84,10 @@ impl Resource for Obj {
                     let z = Fs::parse_float(&mut tokens)?;
 
                     let vertex = Vector3::new(x, y, z);
-                    mesh.load_vertex(vertex);
+                    meshes
+                        .last_mut()
+                        .ok_or(ImportError::InvalidData)?
+                        .load_position(vertex);
                 }
                 "vn" => {
                     // vertex normal
@@ -76,7 +96,10 @@ impl Resource for Obj {
                     let z = Fs::parse_float(&mut tokens)?;
 
                     let normal = Vector3::new(x, y, z);
-                    mesh.load_normal(normal);
+                    meshes
+                        .last_mut()
+                        .ok_or(ImportError::InvalidData)?
+                        .load_normal(normal);
                 }
                 "vt" => {
                     // vertex texture (UV)
@@ -84,7 +107,10 @@ impl Resource for Obj {
                     let y = Fs::parse_float(&mut tokens)?;
 
                     let uv = Vector2::new(x, y);
-                    mesh.load_uv(uv);
+                    meshes
+                        .last_mut()
+                        .ok_or(ImportError::InvalidData)?
+                        .load_uv(uv);
                 }
                 "s" => {
                     // surface roughness
@@ -99,7 +125,10 @@ impl Resource for Obj {
                         .map(|token| FaceElement::parse(token))
                         .collect();
                     let face: Face = Face::new(face_elements);
-                    mesh.load_face(face);
+                    meshes
+                        .last_mut()
+                        .ok_or(ImportError::InvalidData)?
+                        .load_face(face);
                 }
                 "" => (),
                 _ => return Err(ImportError::UnrecognisedToken(cmd.to_owned())),
@@ -107,6 +136,6 @@ impl Resource for Obj {
             Ok(())
         })?;
 
-        Ok(Self { mesh, mtl })
+        Ok(Self { meshes })
     }
 }

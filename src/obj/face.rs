@@ -7,7 +7,7 @@ of a single polygonal `vertex`
 */
 #[derive(Debug)]
 pub struct FaceElement {
-    vertex_index: u32,
+    position_index: u32,
     normal_index: u32,
     uv_index: u32,
 }
@@ -18,17 +18,17 @@ impl FaceElement {
     ---
     Creates a new `FaceElement` from the supplied `vertex`, `normal`, and `uv` indices 
     */
-    pub fn new(vertex_index: u32, normal_index: u32, uv_index: u32) -> Self {
+    pub fn new(position_index: u32, normal_index: u32, uv_index: u32) -> Self {
         Self {
-            vertex_index,
+            position_index,
             normal_index,
             uv_index,
         }
     }
 
-    /// Immutable getter for `vertex_index` of `FaceElement`
-    pub fn vertex_index(&self) -> u32 {
-        self.vertex_index
+    /// Immutable getter for `position_index` of `FaceElement`
+    pub fn position_index(&self) -> u32 {
+        self.position_index
     }
 
     /// Immutable getter for `normal_index` of `FaceElement`
@@ -57,12 +57,12 @@ impl FaceElement {
             })
             .collect();
 
-        let vertex_index: u32 = *tokens.get(0).or(Some(&0)).unwrap();
+        let position_index: u32 = *tokens.get(0).or(Some(&0)).unwrap();
         let uv_index: u32 = *tokens.get(1).or(Some(&0)).unwrap();
         let normal_index: u32 = *tokens.get(2).or(Some(&0)).unwrap();
 
         Self {
-            vertex_index,
+            position_index,
             normal_index,
             uv_index,
         }
