@@ -56,20 +56,21 @@ impl ObjMesh {
         &self.face_data
     }
 
-    /**
-    `ObjMesh.set_name`
-    ---
-    Sets `name` field of `self`
-    */
+    /// Getter for `name` of `ObjMesh`
+    pub fn get_name(&self) -> &str {
+        &self.name
+    }
+
+    /// Setter for `name` of `ObjMesh`
     pub fn set_name(&mut self, value: &str) {
         self.name = value.to_owned()
     }
-    
+
     /// Getter for `material` of `ObjMesh`
     pub fn get_material(&self) -> &MtlMaterial {
         &self.active_material
     }
-    
+
     /// Setter for `material` of `ObjMesh`
     pub fn set_material(&mut self, value: MtlMaterial) {
         self.active_material = value;
