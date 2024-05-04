@@ -12,6 +12,7 @@ pub struct ObjMesh {
     position_data: Vec<Vector3>,
     normal_data: Vec<Vector3>,
     uv_data: Vec<Vector2>,
+    
     // token: f
     face_data: Vec<Face>,
 

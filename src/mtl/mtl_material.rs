@@ -5,6 +5,7 @@ use crate::PathBuf;
 #[allow(unused)]
 #[derive(Debug, Clone)]
 pub struct MtlMaterial {
+    // token: newmtl
     name: String,
 
     // tokens: Ka, Kd
