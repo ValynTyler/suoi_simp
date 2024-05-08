@@ -7,4 +7,4 @@ edition = "2021"
 channel = "nightly"
 
 [dependencies]
-suoi_types = { git = "https://github.com/ValynTyler/suoi_types.git" }
+suoi_types = { path = "../suoi_types" }
