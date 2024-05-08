@@ -1,4 +1,4 @@
-use nerd::vector::{Vector2, Vector3};
+use suoi_types::{Vector2, Vector3};
 
 use crate::face::Face;
 use crate::face::FaceElement;
@@ -94,7 +94,7 @@ impl Resource for Obj {
                     let x = Fs::parse_float(&mut tokens)?;
                     let y = Fs::parse_float(&mut tokens)?;
 
-                    let uv = Vector2::new(x, y);
+                    let uv = Vector2 { x, y };
                     meshes
                         .last_mut()
                         .ok_or(ImportError::InvalidData)?

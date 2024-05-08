@@ -1,4 +1,4 @@
-use nerd::vector::Vector3;
+use suoi_types::Vector3;
 
 use crate::Path;
 use crate::{Fs, ImportError, MtlMaterial, Resource};
@@ -87,11 +87,11 @@ impl Resource for Mtl {
                 }
                 "Ks" => {
                     // define specular color
-                    let col = Vector3::new(
-                        Fs::parse_float(&mut tokens)?,
-                        Fs::parse_float(&mut tokens)?,
-                        Fs::parse_float(&mut tokens)?,
-                    );
+                    let col = Vector3 {
+                        x: Fs::parse_float(&mut tokens)?,
+                        y: Fs::parse_float(&mut tokens)?,
+                        z: Fs::parse_float(&mut tokens)?,
+                    };
 
                     mats.last_mut()
                         .ok_or(ImportError::InvalidData)?

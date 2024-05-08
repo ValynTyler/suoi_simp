@@ -1,4 +1,4 @@
-use nerd::vector::{Vector2, Vector3};
+use suoi_types::{Vector2, Vector3};
 
 use crate::{face::Face, MtlMaterial};
 

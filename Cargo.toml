@@ -7,4 +7,4 @@ edition = "2021"
 channel = "nightly"
 
 [dependencies]
-nerd = { path = "../nerd-rs" }
+suoi_types = { path = "../suoi_types" }

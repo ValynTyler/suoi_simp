@@ -1,4 +1,4 @@
-use nerd::vector::Vector3 as Color;
+use suoi_types::Vector3 as Color;
 
 use crate::PathBuf;
 
@@ -86,11 +86,11 @@ impl MtlMaterial {
     pub fn empty() -> Self {
         Self {
             name: String::new(),
-            ambient_color: Color::ZERO,
-            diffuse_color: Color::ZERO,
-            specular_color: Color::ZERO,
+            ambient_color: Default::default(),
+            diffuse_color: Default::default(),
+            specular_color: Default::default(),
             specular_exponent: 0.0,
-            emissive: Color::ZERO,
+            emissive: Default::default(),
             opacity: 1.0,
             optical_density: 1.0,
             illumination_model: 0,
