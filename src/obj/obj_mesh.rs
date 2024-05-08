@@ -112,4 +112,40 @@ impl ObjMesh {
     pub fn load_face(&mut self, face: Face) {
         self.face_data.push(face);
     }
+
+    pub fn min_pos_index(&self) -> u32 {
+        let mut min = u32::MAX;
+        for face in self.faces() {
+            for elem in face.elements() {
+                if elem.position_index() < min {
+                    min = elem.position_index()
+                }
+            }
+        }
+        min
+    }
+
+    pub fn min_nrm_index(&self) -> u32 {
+        let mut min = u32::MAX;
+        for face in self.faces() {
+            for elem in face.elements() {
+                if elem.normal_index() < min {
+                    min = elem.normal_index()
+                }
+            }
+        }
+        min
+    }
+
+    pub fn min_uvs_index(&self) -> u32 {
+        let mut min = u32::MAX;
+        for face in self.faces() {
+            for elem in face.elements() {
+                if elem.uv_index() < min {
+                    min = elem.uv_index()
+                }
+            }
+        }
+        min
+    }
 }
