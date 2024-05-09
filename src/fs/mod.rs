@@ -35,6 +35,19 @@ impl Fs {
     }
 
     /**
+    Fs::read_bytes
+    ---
+    Wrapper for File::read
+    */
+    pub fn read_bytes(file: &mut File) -> Result<Vec<u8>, ImportError> {
+        let mut t: Vec<u8> = vec![];
+        match file.read_to_end(&mut t) {
+            Ok(_) => Ok(t),
+            Err(_) => Err(ImportError::InvalidData),
+        }
+    }
+
+    /**
     Fs::parse_float
     ---
     Consumes the next element of `tokens` and returns `Ok(f32) if the
@@ -59,7 +72,7 @@ impl Fs {
 
     pub fn parse_lines<F>(text: String, mut f: F) -> Result<(), ImportError>
     where
-        F: FnMut(Tokens, &str) -> Result<(), ImportError>
+        F: FnMut(Tokens, &str) -> Result<(), ImportError>,
     {
         for line in text.lines() {
             let mut tokens = line.split_ascii_whitespace();
