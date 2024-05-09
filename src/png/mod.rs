@@ -10,7 +10,7 @@ impl Resource for Png {
         let mut file = Fs::open_file(path)?;
         let bytes = Fs::read_bytes(&mut file)?;
         
-        println!("{:?}", bytes);
+        println!("{:x?}", bytes);
 
         Ok(Self {})
     }
