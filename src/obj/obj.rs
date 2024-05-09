@@ -7,16 +7,22 @@ use crate::obj_mesh::ObjMesh;
 use crate::Fs;
 use crate::ImportError;
 use crate::Mtl;
+use crate::PathBuf;
 use crate::Resource;
 
 #[derive(Debug)]
 pub struct Obj {
+    path: PathBuf,
     meshes: Vec<ObjMesh>,
 }
 
 impl Obj {
     pub fn meshes(&self) -> &Vec<ObjMesh> {
         &self.meshes
+    }
+    
+    pub fn path(&self) -> &PathBuf {
+        &self.path
     }
 }
 
@@ -124,6 +130,6 @@ impl Resource for Obj {
             Ok(())
         })?;
 
-        Ok(Self { meshes })
+        Ok(Self { meshes, path: path.to_owned() })
     }
 }
