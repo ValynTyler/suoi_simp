@@ -6,6 +6,9 @@ pub use obj::*;
 pub mod mtl;
 pub use mtl::*;
 
+pub mod png;
+pub use png::*;
+
 pub mod fs;
 pub use fs::*;
 

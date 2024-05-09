@@ -1,10 +1,11 @@
-use suoi_simp::{Obj, Resource};
-use suoi_simp::Path;
+use std::path::Path;
+
+use suoi_simp::{Png, Resource};
 
 fn main() {
-    let obj_path = Path::new("../assets/models/stuff.obj");
-    let obj: Obj = Obj::import(obj_path).expect("ImportError");
+    let path = Path::new("../assets/textures/soy.png");
+    let png = Png::import(path).expect("IMPORT_ERROR");
 
-    let mesh = obj.meshes().last().unwrap();
-    println!("{}", mesh.min_pos_index());
+    
+
 }
