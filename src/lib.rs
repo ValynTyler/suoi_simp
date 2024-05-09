@@ -6,11 +6,25 @@ pub use obj::*;
 pub mod mtl;
 pub use mtl::*;
 
-pub mod resource;
-pub use resource::*;
-
-pub mod error;
-pub use error::*;
-
 pub mod fs;
 pub use fs::*;
+
+/**
+crate::ImportError
+---
+Custom error type meant to be returned as
+`Err(Error)` variant of `Result` type inside
+crate specific falible function calls
+*/
+#[derive(Debug)]
+pub enum ImportError {
+    InvalidData,
+    InvalidPath(PathBuf),
+    UnrecognisedToken(String),
+}
+
+pub trait Resource {
+    fn import(path: &Path) -> Result<Self, ImportError>
+    where
+        Self: Sized;
+}
